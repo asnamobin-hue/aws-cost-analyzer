@@ -3,14 +3,15 @@ import boto3
 app = Flask(__name__)
 client = boto3.client("ce")       
 @app.route("/total-cost")
+
 def total_cost():
     response = client.get_cost_and_usage(
         TimePeriod={
             'Start': '2026-06-01' ,
             'End' : '2026-06-25'
-        },
-        Granularity="MONTHLY",
-        Metrics=["UnblendedCost"]
+    },
+        Granularity='MONTHLY',
+        Metrics=['UnblendedCost']
     )
     results = response["ResultsByTime"]
     first = results[0]
@@ -25,31 +26,22 @@ def total_cost():
     }
 @app.route("/service-breakdown")
 def service_breakdown():
-    response_b = client.get_cost_and_usage(
+        response_b = client.get_cost_and_usage(
         TimePeriod={
             'Start' : '2026-06-01' ,
             'End' : '2026-06-25'
      },
-     Granularity="MONTHLY",
-     Metrics=["UnblendedCost"],
-     GroupBy=[
-          {
-               "Type" : "DIMENSION" ,
-               "Key" : "SERVICE"
+       Granularity='MONTHLY',
+       Metrics=['UnblendedCost']
+     )
+       GroupBy=[
+            {
+                'Type' : 'DIMENSION' ,
+                'Key' : 'SERVICE'
             }
        ]
       )
-    groups = response_b["ResultsByTime"][0]["Groups"] 
-    services = []
-    for group in groups:
-        service = group["Keys"][0]
-        amount = group["Metrics"]["UnblendedCost"]["Amount"]
-        unit = group["Metrics"]["UnblendedCost"]["Unit"] 
-        services.append({
-           "service": service,
-           "amount": amount,
-           "unit": unit
-})
-    return services
+    print(response_b)
+    return {"message": "check terminal"}
 if __name__ == "__main__":
     app.run(debug=True)
