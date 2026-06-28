@@ -51,5 +51,28 @@ def service_breakdown():
            "unit": unit
 })
     return services
+@app.route("/monthly-trend")
+def monthly_trend():
+    response_c = client.get_cost_and_usage(
+        TimePeriod={
+            'Start' : '2026-01-01',
+            'End' : '2026-06-30'
+    },
+    Granularity="MONTHLY",
+    Metrics=["UnblendedCost"],
+    )
+    
+    months = response_c["ResultsByTime"]
+    monthly_data = []
+    for month in months:
+        start = month["TimePeriod"]["Start"]
+        amount = month["Total"]["UnblendedCost"]["Amount"]
+        unit = month["Total"]["UnblendedCost"]["Unit"]
+        monthly_data.append({
+            "month": start,
+            "amount": amount,
+            "unit" : unit
+})
+    return monthly_data
 if __name__ == "__main__":
     app.run(debug=True)
