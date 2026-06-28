@@ -74,5 +74,26 @@ def monthly_trend():
             "unit" : unit
 })
     return monthly_data
+@app.route("/budget")
+def budget():
+    budget_client = boto3.client("budgets")
+    response_d = budget_client.describe_budgets(
+        AccountId="978092319786"
+    )
+    budget = response_d["Budgets"][0]
+    budget_limit = float(budget["BudgetLimit"]["Amount"])
+    status = budget["HealthStatus"]["Status"]
+    unit = budget["BudgetLimit"]["Unit"]
+    forecast = float(budget["CalculatedSpend"]["ForecastedSpend"]["Amount"])
+    actual_spend = float(budget["CalculatedSpend"]["ActualSpend"]["Amount"])
+    remaining = float(budget_limit)-float(actual_spend)
+    return { 
+        "budget": budget_limit,
+        "spent": actual_spend,
+        "remaining": remaining,
+        "forecast": forecast,
+        "status": status,
+        "unit": unit
+    }
 if __name__ == "__main__":
     app.run(debug=True)
