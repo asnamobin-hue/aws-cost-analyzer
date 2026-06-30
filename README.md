@@ -1,182 +1,122 @@
-# AWS Cost Analyzer
+# AWS Cost Analyzer Dashboard
 
-> A full-stack cloud dashboard built using React, Flask and AWS Cost Explorer APIs.
+A dashboard that pulls AWS billing data through the Cost Explorer API and presents it in a simple, readable way—showing total spend, cost by service, monthly spending trends, and budget tracking in one place.
 
-A full-stack web application that helps visualize AWS cloud costs using the AWS Cost Explorer API.
+I built this as my first full-stack cloud project to combine what I was learning in AWS with React, Flask, and REST APIs. The goal was to understand how cloud billing data can be collected, processed, and visualized through a real application.
 
-The project consists of a Flask backend that fetches cost data from AWS and a React frontend that displays it in a clean dashboard with charts, budget tracking, and service-wise cost analysis.
+**Live Demo:** https://aws-cost-analyzer.vercel.app/
 
-This project also includes a demo mode, making it easy to explore the application without requiring an AWS account that already has billing data.
-
----
-
-## Live Demo
-
-**Frontend (Vercel)**  
-https://aws-cost-analyzer.vercel.app/
-
-**Backend (Render)**  
-https://aws-cost-analyzer-1.onrender.com/
+> **Note:** The deployed application runs in demo mode by default.
 
 ---
 
-## Features
+## Why Demo Mode?
 
-- View total AWS cost
-- Monthly cost trend visualization
-- Service-wise cost breakdown
-- Budget overview with progress tracking
-- Light and Dark theme
-- Demo mode for showcasing the application
-- Responsive dashboard
-- Flask REST API
-- AWS Cost Explorer integration
+The dashboard uses AWS Cost Explorer and AWS Budgets through `boto3`, which requires valid AWS credentials.
+
+Since I didn't want to expose my personal AWS billing information publicly—and because Cost Explorer API requests are billable—the deployed version uses realistic sample data by default.
+
+The backend still contains the complete AWS integration. If you run the project locally with your own AWS credentials, it will fetch real billing information from your AWS account.
+
+---
+
+## Screenshots
+
+### Light Theme
+
+![Dashboard Light](screenshots/dashboard-light.png)
+
+### Dark Theme
+
+![Dashboard Dark](screenshots/dashboard-dark.png)
 
 ---
 
 ## Tech Stack
 
 ### Frontend
+
 - React
-- CSS
 - Recharts
+- CSS
 
 ### Backend
+
 - Flask
-- Boto3
+- boto3
 - Flask-CORS
 
-### Cloud Services
+### AWS Services
+
 - AWS Cost Explorer API
 - AWS Budgets API
 
 ### Deployment
-- Vercel
-- Render
 
----
-
-## Screenshots
-
-### Dashboard (Light Mode)
-
-![Dashboard Light](screenshots/dashboard-light.png)
-
-### Dashboard (Dark Mode)
-
-![Dashboard Dark](screenshots/dashboard-dark.png)
-
----
-
-## Project Structure
-
-```
-aws-cost-analyzer
-│
-├── frontend
-│
-├── screenshots
-│   ├── dashboard-light.png
-│   └── dashboard-dark.png
-│
-├── app.py
-├── requirements.txt
-├── .gitignore
-└── README.md
-```
+- Vercel (Frontend)
+- Render (Backend)
 
 ---
 
 ## Running Locally
 
-### Clone the repository
+Clone the repository:
 
 ```bash
 git clone https://github.com/asnamobin-hue/aws-cost-analyzer.git
-```
-
-### Move into the project
-
-```bash
 cd aws-cost-analyzer
 ```
 
 ### Backend
 
-Install dependencies
-
 ```bash
 pip install -r requirements.txt
-```
-
-Run Flask
-
-```bash
 python app.py
 ```
 
----
-
 ### Frontend
-
-Move into frontend
 
 ```bash
 cd frontend
-```
-
-Install packages
-
-```bash
 npm install
-```
-
-Start React
-
-```bash
 npm start
 ```
 
----
+By default, the application starts in demo mode.
 
-## Demo Mode
+If you'd like to use your own AWS billing data:
 
-The application currently supports a demo mode.
+1. Configure your AWS credentials:
 
-When enabled, the backend returns sample AWS billing data so the dashboard can be explored without requiring an AWS account that already has billing information.
+```bash
+aws configure
+```
 
-Switching to live AWS data only requires disabling demo mode.
+2. Open `app.py` and change:
 
----
+```python
+DEMO_MODE = True
+```
 
-## What I Learned
+to
 
-Building this project helped me understand:
+```python
+DEMO_MODE = False
+```
 
-- Building REST APIs using Flask
-- Working with AWS SDK (Boto3)
-- Using AWS Cost Explorer APIs
-- Integrating frontend and backend applications
-- React state management with Hooks
-- Creating responsive dashboards
-- Deploying Flask applications on Render
-- Deploying React applications on Vercel
-- Managing environment variables and API endpoints
-- Connecting cloud services with a frontend application
+3. Restart the backend.
+
+The dashboard will now fetch billing information from the AWS account associated with your configured credentials.
 
 ---
 
 ## Future Improvements
 
-Some features I would like to add in future versions:
-
 - Custom date range selection
-- Cost forecasting
-- Download reports as CSV or PDF
-- Authentication
+- CSV export for reports
+- Authentication for live AWS data
 - Multi-account AWS support
-- Service filters
-- Better analytics and insights
+- Better loading and error states
 
 ---
 
@@ -184,14 +124,12 @@ Some features I would like to add in future versions:
 
 **Asna Mobin**
 
-GitHub  
-https://github.com/asnamobin-hue
+GitHub: https://github.com/asnamobin-hue
 
-LinkedIn  
-https://www.linkedin.com/in/asna-mobin-57b5aa380
+LinkedIn: https://www.linkedin.com/in/asna-mobin-57b5aa380
 
 ---
 
 ## License
 
-This project is created for learning and portfolio purposes.
+This project is licensed under the MIT License.
