@@ -19,25 +19,25 @@ function App() {
   const [demoMode, setDemoMode] = useState(false);
 
   useEffect(() => {
-    fetch(fetch(`${API_BASE}/total-cost?demo=${demoMode}`))
+    fetch(`${API_BASE}/total-cost?demo=${demoMode}`)
       .then((res) => res.json())
       .then(setTotalCost);
   }, [demoMode]);
 
   useEffect(() => {
-    fetch(fetch(`${API_BASE}/service-breakdown?demo=${demoMode}`))
+    fetch(`${API_BASE}/service-breakdown?demo=${demoMode}`)
       .then((res) => res.json())
       .then(setServices);
   }, [demoMode]);
 
   useEffect(() => {
-    fetch(fetch(`${API_BASE}/monthly-trend?demo=${demoMode}`))
+    fetch(`${API_BASE}/monthly-trend?demo=${demoMode}`)
       .then((res) => res.json())
       .then(setMonthlyTrend);
   }, [demoMode]);
 
   useEffect(() => {
-    fetch(fetch(`${API_BASE}/budget?demo=${demoMode}`))
+    fetch(`${API_BASE}/budget?demo=${demoMode}`)
       .then((res) => res.json())
       .then(setBudget);
   }, [demoMode]);
