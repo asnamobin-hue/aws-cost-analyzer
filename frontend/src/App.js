@@ -10,6 +10,7 @@ import ServicePieChart from "./components/ServicePieChart";
 import BudgetOverview from "./components/BudgetOverview";
 
 function App() {
+  const API_BASE = "https://aws-cost-analyzer-1.onrender.com";
   const [totalCost, setTotalCost] = useState(null);
   const [services, setServices] = useState([]);
   const [monthlyTrend, setMonthlyTrend] = useState([]);
@@ -18,25 +19,25 @@ function App() {
   const [demoMode, setDemoMode] = useState(false);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/total-cost?demo=${demoMode}`)
+    fetch(fetch(`${API_BASE}/total-cost?demo=${demoMode}`))
       .then((res) => res.json())
       .then(setTotalCost);
   }, [demoMode]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/service-breakdown?demo=${demoMode}`)
+    fetch(fetch(`${API_BASE}/service-breakdown?demo=${demoMode}`))
       .then((res) => res.json())
       .then(setServices);
   }, [demoMode]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/monthly-trend?demo=${demoMode}`)
+    fetch(fetch(`${API_BASE}/monthly-trend?demo=${demoMode}`))
       .then((res) => res.json())
       .then(setMonthlyTrend);
   }, [demoMode]);
 
   useEffect(() => {
-    fetch(`http://127.0.0.1:5000/budget?demo=${demoMode}`)
+    fetch(fetch(`${API_BASE}/budget?demo=${demoMode}`))
       .then((res) => res.json())
       .then(setBudget);
   }, [demoMode]);
