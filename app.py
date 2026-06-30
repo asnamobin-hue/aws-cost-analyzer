@@ -1,9 +1,19 @@
 from flask import Flask
+from flask_cors import CORS
+import os
 import boto3
 app = Flask(__name__)
+CORS(app)
 client = boto3.client("ce")       
+DEMO_MODE = True
+ACCOUNT_ID = os.getenv("AWS_ACCOUNT_ID")
 @app.route("/total-cost")
 def total_cost():
+    if DEMO_MODE:
+        return {
+            "amount": "23.40",
+            "unit": "USD"
+        }
     response = client.get_cost_and_usage(
         TimePeriod={
             'Start': '2026-06-01' ,
@@ -25,6 +35,14 @@ def total_cost():
     }
 @app.route("/service-breakdown")
 def service_breakdown():
+    if DEMO_MODE:
+        return [
+            {"service":"Amazon EC2","amount":"9.80","unit":"USD"},
+            {"service":"Amazon S3","amount":"5.60","unit":"USD"},
+            {"service":"AWS Lambda","amount":"3.40","unit":"USD"},
+            {"service":"Amazon RDS","amount":"2.90","unit":"USD"},
+            {"service":"Amazon CloudWatch","amount":"1.70","unit":"USD"},
+        ]
     response_b = client.get_cost_and_usage(
         TimePeriod={
             'Start' : '2026-06-01' ,
@@ -53,6 +71,15 @@ def service_breakdown():
     return services
 @app.route("/monthly-trend")
 def monthly_trend():
+    if DEMO_MODE:
+        return [
+            {"month":"2026-01-01","amount":"14.20","unit":"USD"},
+            {"month":"2026-02-01","amount":"18.60","unit":"USD"},
+            {"month":"2026-03-01","amount":"16.40","unit":"USD"},
+            {"month":"2026-04-01","amount":"21.10","unit":"USD"},
+            {"month":"2026-05-01","amount":"19.80","unit":"USD"},
+            {"month":"2026-06-01","amount":"23.40","unit":"USD"},
+        ]
     response_c = client.get_cost_and_usage(
         TimePeriod={
             'Start' : '2026-01-01',
@@ -77,8 +104,17 @@ def monthly_trend():
 @app.route("/budget")
 def budget():
     budget_client = boto3.client("budgets")
+    if DEMO_MODE:
+        return {
+            "budget": 50.00,
+            "spent": 23.40,
+            "remaining": 26.60,
+            "forecast": 31.20,
+            "status": "HEALTHY",
+            "unit": "USD"
+        } 
     response_d = budget_client.describe_budgets(
-        AccountId="978092319786"
+        AccountId=ACCOUNT_ID
     )
     budget = response_d["Budgets"][0]
     budget_limit = float(budget["BudgetLimit"]["Amount"])
