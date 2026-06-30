@@ -7,6 +7,17 @@ CORS(app)
 client = boto3.client("ce")       
 DEMO_MODE = True
 ACCOUNT_ID = os.getenv("AWS_ACCOUNT_ID")
+@app.route("/")
+def home():
+    return {
+        "message": "AWS Cost Analyzer Backend is running successfully.",
+        "available_endpoints": [
+            "/total-cost",
+            "/service-breakdown",
+            "/monthly-trend",
+            "/budget"
+        ]
+    }
 @app.route("/total-cost")
 def total_cost():
     if DEMO_MODE:
