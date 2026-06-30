@@ -16,7 +16,7 @@ function App() {
   const [monthlyTrend, setMonthlyTrend] = useState([]);
   const [budget, setBudget] = useState(null);
   const [theme, setTheme] = useState("light");
-  const [demoMode, setDemoMode] = useState(false);
+  const [demoMode, setDemoMode] = useState(true);
 
   useEffect(() => {
     fetch(`${API_BASE}/total-cost?demo=${demoMode}`)
